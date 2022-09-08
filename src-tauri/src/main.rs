@@ -4,8 +4,6 @@ windows_subsystem = "windows"
 )]
 
 use std::{io::{Write, Read}, net::{TcpStream, Shutdown}};
-use std::intrinsics::try;
-use std::ptr::null;
 
 use bytebuffer::ByteBuffer;
 
@@ -54,11 +52,13 @@ fn read_var_int(stream: &mut TcpStream) -> i64 {
 
 #[tauri::command]
 fn ping(host: &str, port: &str) -> String {
-    let mut stream_open = TcpStream::connect(host.to_owned() + ":" + port);
-    let mut stream = match stream_open {
-        Ok(s) => s,
-        Err(_err) => null,
-    };
+    let mut stream = TcpStream::connect(host.to_owned() + ":" + port).unwrap();
+    // let mut stream = match stream_open {
+    //     Ok(s) => s,
+    //     Err(_err) => {
+    //         println!("error");
+    //     }
+    // };
 
 
     let mut buffer = ByteBuffer::new();

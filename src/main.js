@@ -14,7 +14,31 @@ function addServer() {
         const server = document.createElement("div");
         server.id = "server" + id;
         server.className = "server";
-        server.innerHTML = "<div class='server_ip'> Server IP : " + ip + "</div><div class='server_port'> Server port :" + port + "</div><div class='server_status'>Server statut : Unknown</div>";
+        // server.innerHTML =
+        //     "<div class='server_ip'> Server IP : " + ip + "</div>" +
+        //     "<div class='server_port'> Server port :" + port + "</div>" +
+        //     "<div class='server_status'>Server statut : Unknown</div>" +
+        //     "<button class='ping_button' onclick='console.log(ipChecker.check(parentNode.firstElementChild.textContent.slice(13)).match)'>Remove</button>";
+
+        const serverIp = document.createElement("div");
+        serverIp.className = "server_ip";
+        serverIp.textContent = "Server IP : " + ip;
+        server.appendChild(serverIp);
+        const serverPort = document.createElement("div");
+        serverPort.className = "server_port";
+        serverPort.textContent = "Server port : " + port;
+        server.appendChild(serverPort);
+        const serverStatus = document.createElement("div");
+        serverStatus.className = "server_status";
+        serverStatus.textContent = "Server status : Unknown";
+        server.appendChild(serverStatus);
+        const pingButton = document.createElement("button");
+        pingButton.className = "ping_button";
+        pingButton.textContent = "Ping";
+        pingButton.onclick = function () {
+            ping(ip, port);
+        }
+        server.appendChild(pingButton);
 
         document.getElementById("server_list").appendChild(server);
         id++;
@@ -30,4 +54,12 @@ function addServer() {
     // const test = document.createElement('p');
     // test.innerText = 'Hello World';
     // document.querySelector('#app').appendChild(test);
+}
+
+function ping(host, port) {
+    let response = "";
+    invoke('ping', {host: host, port: port}).then((ping) => {
+        response = ping
+        return response;
+    });
 }
